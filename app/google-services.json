@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "203455336421",
+    "project_id": "aulafirebase-c1e32",
+    "storage_bucket": "aulafirebase-c1e32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203455336421:android:a12d49460f59e628a5690c",
+        "android_client_info": {
+          "package_name": "com.larissacardoso.aulafirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZsbP_WgkjtetWfLQVAjoQcx1py69U3zE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
