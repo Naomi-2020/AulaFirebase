@@ -40,7 +40,8 @@ class MainActivity : AppCompatActivity() {
             //metodo
             //salvarDados()
             //atualizarRemoverdados()
-            listarDados()
+            //listarDados()
+            pesquisarDados()
 
             //cadastroUsuario()
             //logarUsuario()
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun salvarDadosUsuario(
         nome: String, idade: String)
@@ -70,31 +72,105 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun pesquisarDados() {
+        val referenciaUsuario = bancoDados
+            .collection("usuarios")
+            .whereEqualTo()
+        //fazendo a mesma operação do snapchot, mas para uma lista de dados
+        referenciaUsuario.addSnapshotListener { querySnapshot, erro ->
+            //esse ponto de interrogação é obrigatorio, pois determina seguridade
+            val listaDocuments = querySnapshot?.documents
+
+            var listaResultado = ""
+            listaDocuments?.forEach { documentSnapshot ->
+                val dados = documentSnapshot?.data
+                if (dados != null) {
+                    val nome = dados["nome"]
+                    val idade = dados["idade"]
+
+                    listaResultado += "Nome: $nome - Idade: $idade \n"
+
+                }
+
+            }
+            //exibir na tela do app os dados recuperados no banco de dados
+            binding.txtResultado.text = listaResultado
+        }
+    }
 
     private fun listarDados() {
 
         //salvarDadosUsuario("pedro", "24")
+        //recuperando os dados do usuarioa no banco de dados
         val idUsuarioLogado = autenticacao.currentUser?.uid
 
+        //verificando a exeistencia do usuario logado
         if( idUsuarioLogado != null ){
+
+
             val referenciaUsuario = bancoDados
                 .collection("usuarios")
-                .document(idUsuarioLogado)
 
-            referenciaUsuario
-                .get() //recupera os dados do banco
-                .addOnSuccessListener { documentSnapshot ->
+            //fazendo a mesma operação do snapchot, mas para uma lista de dados
+            referenciaUsuario.addSnapshotListener { querySnapshot, erro ->
+                //esse ponto de interrogação é obrigatorio, pois determina seguridade
+                val listaDocuments = querySnapshot?.documents
+
+                var listaResultado = ""
+                listaDocuments?.forEach { documentSnapshot ->
+                    val dados = documentSnapshot?.data
+                    if (dados != null) {
+                        val nome = dados["nome"]
+                        val idade = dados["idade"]
+
+                        listaResultado += "Nome: $nome - Idade: $idade \n"
+
+                    }
+
+                }
+                //exibir na tela do app os dados recuperados no banco de dados
+                binding.txtResultado.text = listaResultado
+
+            }
+
+        //##########################################################################//
+
+            //recupera o dado e avisa o banco de dados no firebase e avisa o usuario
+            //addSnapshotListener() - estado atual dos dados ouvindo o banco de dados por alteração e notifica o app
+            //para somente um unico usuario
+            /*referenciaUsuario.addSnapshotListener { documentSnapshot, erro ->
+                val dados = documentSnapshot?.data
+                if( dados != null ) {
+                    val nome = dados["nome"]
+                    val idade = dados["idade"]
+                    val texto = "Nome: $nome - Idade: $idade"
+
+                    //exibir na tela do app os dados recuperados no banco de dados
+                    binding.txtResultado.text = texto
+
+                }
+            }*/
+
+
+            //##########################################################################//
+            //recuperar os dados do usuario uma unica vez
+            /*referenciaUsuario.get()
+                //mensagem de sucesso
+                .addOnSuccessListener {
+                    //são os dados contidos na coleção, ou seja, os campos da coleção
+                    documentSnapshot ->
                     val dados = documentSnapshot.data
                     if( dados != null ) {
                         val nome = dados["nome"]
                         val idade = dados["idade"]
                         val texto = "Nome: $nome - Idade: $idade"
 
+                        //exibir na tela do app os dados recuperados no banco de dados
                         binding.txtResultado.text = texto
                     }
 
                 }
-                .addOnFailureListener {  }
+                .addOnFailureListener {  }*/
         }
 
     }
@@ -177,7 +253,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun logarUsuario() {
         //Dados adicionados pelo usuario
-        val email = "pedro.henrique@gmail.com"
+        val email = "naomi2@gmail.com"
+        //val email = "pedro.henrique@gmail.com"
         val senha = "*1254Na@@"
 
         //Estivesse em uma tela de login
